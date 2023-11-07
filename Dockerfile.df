@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+# v.1.1
+# 預安裝
+RUN apt update
+RUN apt install -y --no-install-recommends vim git zsh wget curl htop net-tools openssh-server unzip
+# 配置 zsh
+ADD zshrc /root/.zshrc
+ADD omz.tar /root/
+# 配置SSH Service
+ADD sshd_config /etc/ssh/
+ADD vmkey.pub /root/.ssh/
+RUN sed -i 's/root:x:0:0:root:\/root:\/bin\/bash/root:x:0:0:root:\/root:\/usr\/bin\/zsh/g' /etc/passwd
+# ---
+
+# 客製化寫這邊
+
+# ---
+WORKDIR /opt
+# 啟動指令
+CMD ["/usr/bin/zsh"]
